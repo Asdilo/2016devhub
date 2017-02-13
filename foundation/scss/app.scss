@@ -1,0 +1,377 @@
+@charset 'utf-8';
+//GLOBAL FONT GOODNESS. THIS MUST BE SET BEFORE THE SETTINGS IMPORT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@font-face {
+    font-family: 'Vantiv-Icons';
+    src: url('../font/Vantiv-Icons.ttf');
+}
+@import 'settings';
+@import 'foundation';
+@import 'motion-ui';
+@import "//fast.fonts.net/cssapi/b7ca5286-aaf2-4b32-bc48-ed9760c1d66d.css";
+
+@include foundation-everything;
+
+// !!!!!!!!!!!!!!! CUSTOM SASS SWAGGER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//*********************************
+//.00 - SASS Varialbles and Mixins 
+//*********************************
+
+@mixin background-gradient($deg,$color1, $color2) { 
+  background: $color1; /* Old browsers */
+  background: -moz-linear-gradient($deg, $color1 0, $color2 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0,$color1), color-stop(100%,$color2)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient($deg, $color1 0,$color2 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient($deg, $color1 0,$color2 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient($deg, $color1 0,$color2 100%); /* IE10+ */
+  background: linear-gradient($deg, $color1 0,$color2 100%); /* W3C */
+}
+//Base mixin to define a section (row) colors
+@mixin row-colors ($font-color, $bg-color, $h-color,$a-color,$ahover-color) {
+  color: $font-color;
+  background-color: $bg-color;
+  h1, h2, h3, h4, h5, h6 {
+    color: $h-color;
+  }
+  a {
+    color: $a-color;
+  }
+  a:hover {
+    color: $ahover-color;
+  }
+}
+
+//Easy mixin to add to any slightly elevated sections
+@mixin global-shadow {
+  -webkit-box-shadow: 0 4px 2px 0 rgba(50, 50, 50, 0.4);
+  -moz-box-shadow: 0 4px 2px 0 rgba(50, 50, 50, 0.4);
+  box-shadow: 0 4px 2px 0 rgba(50, 50, 50, 0.4);
+}
+
+//This mixin allows you to add simple CSS3 transitions to any element, and keeps animation consistent
+@mixin global-transition ($sec, $ease) {
+  -moz-transition: all $sec $ease;
+  -o-transition: all $sec $ease;
+  -webkit-transition: all $sec $ease;
+  transition: all $sec $ease;
+  /*Acceptable values for $ease = ease|linear|ease-in|ease-out|ease-in-out|cubic-bezier()|initial|inherit*/
+}
+//mixin for the infamous Vantive gradient
+@mixin background-gradient($deg,$color1, $color2,$per) {
+    background: $color1; /* Old browsers */
+    background: -moz-linear-gradient($deg, $color1 0, $color2 $per); /* FF3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0,$color1), color-stop($per,$color2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient($deg, $color1 0,$color2 $per); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient($deg, $color1 0,$color2 $per); /* Opera 11.10+ */
+    background: -ms-linear-gradient($deg, $color1 0,$color2 $per); /* IE10+ */
+    background: linear-gradient($deg, $color1 0,$color2 $per); /* W3C */
+}
+//the next 2 mixins are for the Vantiv 'slice' use on a single div to create the effect
+@mixin skewX($deg) {
+    -webkit-transform: skewX($deg);
+    -moz-transform: skewX($deg);
+    -ms-transform: skewX($deg);
+    -o-transform: skewX($deg);
+    transform: skewX($deg);
+}
+@mixin skewY($deg) {
+    -webkit-transform: skewY($deg);
+    -moz-transform: skewY($deg);
+    -ms-transform: skewY($deg);
+    -o-transform: skewY($deg);
+    transform: skewY($deg);
+}
+
+//*********************************
+//.01 - GLOBAL CUSTOM STYLES 
+//*********************************
+
+//these classes are used to manage icon and font sizes with more control
+.size-05x { font-size: 0.75rem; }
+.size-1x { font-size: 1rem; }
+.size-2x { font-size: 2rem; }
+.size-3x { font-size: 3rem; }
+.size-4x { font-size: 4rem; }
+.size-5x { font-size: 5rem; }
+.size-8x { font-size: 8rem; }
+.size-10x { font-size: 10rem; }
+.size-12x { font-size: 12rem; }
+
+
+//Special color fill classes for the SVGs and Icon fonts
+  .svg-white {
+  fill:white;
+}
+
+.svg-lblue {
+  fill:#00A9E0;
+}
+
+.svg-black {
+  fill:#000009;
+}
+
+// .full-row below should be a container for .row . Using this will allow you to have a banded section with full bleed
+.full-row {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    .row{
+      padding: 2.5rem 0 1.5rem 0;
+    }
+
+    
+  img {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .full-row{
+    background-blend-mode: overlay;
+  }
+}
+.button{
+  text-transform: uppercase;
+}
+
+// Add these row color classes elements with to .full-row or .row classes to control the font,bg,header,and link colors
+.blue {
+  @include row-colors($white, $primary-color, $white, $white, $white);
+}
+.gray {
+  @include row-colors($dark-gray, $light-gray, $dark-gray, $primary-color, $blue);
+}
+.med-gray {
+  @include row-colors($white, $medium-gray, $white, $white, $primary-color);
+}
+.dark-gray {
+  @include row-colors($white, $dark-gray, $white, $white, $primary-color);
+}
+.is-stuck{
+  @include global-shadow;
+}
+
+//use these custom callouts for app modular parts and info boxes on home page
+.devhub-callout {
+  @include callout-base;
+  @include callout($secondary-color);
+  @include global-transition(.5s,ease);
+
+  padding:0 0 1rem 0;
+  img{
+    margin: 0 0 1rem 0;
+  }
+  p {
+    margin: 0 1rem 1rem 1rem;
+  }
+}
+.devhub-callout:hover {
+  @include callout-style($primary-color);
+  p, h1,h2,h3,h4,h5,h6,li {
+      color: $secondary-color;
+  }
+  img {
+    opacity: .85;
+  }
+}
+
+//Global footer styles
+footer li:first-child {
+    font-weight: bold;
+    font-size: 1rem;
+}
+@media (max-width: 640px) {
+  footer .column{
+    text-align:center;
+  }
+  footer.full-row .row{
+    padding: 15px 0px 0px 0px;
+  }
+}
+
+//*********************************
+//.02 - HOMEPAGE CUSTOM STYLES 
+//*********************************
+
+//the following classes build out the responsive banner header
+.banner-wrap {
+    width: 100%;
+    min-height: rem-calc(400);
+    position: relative;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 0px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.banner-container {
+    position: absolute;
+    color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    h1, h2, h3, h4, h5, h5, p, ul, ol {
+        color: white;
+    }
+}
+
+.banner-container:before {
+    @include skewX(45deg);
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility:hidden;
+    backface-visibility:hidden;
+    @include background-gradient(90deg,$primary-color, $blue, 130%);
+    background-color: $primary-color;
+    opacity: .8;
+    z-index: 0;
+}
+
+.banner-container {
+    top: 0;
+    left: -50%;
+    width: 125%;
+    text-align: left;   
+}
+
+    .banner-text {
+        opacity: 1;
+        z-index: 1;
+        position: absolute;
+    }
+    
+@media (max-width: 640px) {
+  .banner-container:before { 
+    @include skewX(0deg);
+  }
+  .banner-container{
+      left: 0;
+      width:100%;
+      .banner-text{
+          padding:10%;
+          text-align: center;
+          max-width: 100%;
+      }
+  }
+}
+
+
+//*********************************
+//.03 - APP INTEGRATE CUSTOM STYLES 
+//*********************************
+
+/* style for welcome message */
+.welcome{
+    margin:auto auto; /* center content */
+    padding-right:5%; 
+    padding-left:5%;
+}
+/* height for app header */
+.appheader{
+    min-height: rem-calc(400); 
+    display:inline-flex; /* allows vertical alignemnt of .welcome */
+}
+
+/* Asterisk, should button margin be global? */
+.welcome .primary.button{
+    margin: 8px; /* padding for buttons in appheader */
+}
+/* display tabs in the center */
+.tabs{
+    margin:auto;
+    display: table; 
+    border: none;
+}
+/*spacing to tabs on app integrate page*/
+.tabs li{
+    margin-right: rem-calc(10);
+    margin-left: rem-calc(10);
+}
+.tabs li a{
+    color: white;
+    background-color: $medium-gray;
+}
+.tabs li.is-active a{
+    color: black;
+    background-color: $light-gray;
+}
+
+/*********** panel styles */
+/* size of one app box*/
+.callout{
+    width:rem-calc(300);
+    height:rem-calc(350);
+    display: inline-block;
+}
+/* control size of app title*/
+panel h2{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+/* app description*/
+panel p{
+    overflow: auto;
+    height: rem-calc(110);
+}
+.vicons{
+  height: rem-calc(125);
+}
+.icon{
+  color: $medium-gray;
+}
+/* icon styles by the # of icons for 1 app*/
+ vicon.icon-2, vicon.icon-1{
+    font-size: 5em;
+}
+vicon.icon-3{
+    margin-top: rem-calc(20);
+    margin-right: rem-calc(5);
+    margin-left: rem-calc(5);
+    font-size:4em;
+    display: inline-flex;
+}
+vicon.icon-6, vicon.icon-5, vicon.icon-4 {
+    font-size: 3.5rem;
+    line-height: normal;
+}
+/* app progress bar*/
+.progress{
+    width:80%;
+    display: inline-block;
+    margin-left: rem-calc(-40); /* makes room for the percent*/
+    margin-bottom: 0%;
+}
+.percentage{
+    position: absolute;
+    display: inline-block;
+    margin-left: rem-calc(10);
+    color: $light-blue;
+}
+/* create new app style this will change*/
+panel:last-child, panel:last-child .callout{
+  background-color: $light-gray;
+}
+panel:last-child .callout{
+  border-style: dashed;
+  border-color: $light-blue;
+}
+panel:last-child .percentage{
+  display: none;
+}
+panel:last-child .icon{
+  color: $light-blue;
+}
